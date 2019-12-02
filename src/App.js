@@ -15,9 +15,13 @@ class App extends React.Component {
     this.toggleMute = this.toggleMute.bind(this)
 
     const storedDays = localStorage.getItem("selectedDays")
+    const storedMuted = localStorage.getItem("muted")
+    const muted = JSON.parse(storedMuted) || false
+
+    this.audio.muted = muted
     this.state = {
       selectedDays: deserializeDates(storedDays),
-      muted: false,
+      muted: muted,
     }
   }
 
@@ -45,8 +49,10 @@ class App extends React.Component {
   }
 
   toggleMute() {
-    this.audio.muted = !this.state.muted
-    this.setState({ muted: !this.state.muted })
+    const toggled = !this.state.muted
+    this.audio.muted = toggled
+    this.setState({ muted: toggled })
+    localStorage.setItem("muted", JSON.stringify(toggled))
   }
 
   render() {
