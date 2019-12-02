@@ -101,7 +101,7 @@ class App extends React.Component {
             }}
           />
 
-          <div class="settings">
+          <div className="settings">
             {!this.state.showColorPicker && (
               <button
                 style={{ backgroundColor: this.state.selectedColor }}
