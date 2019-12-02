@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import DayPicker from "react-day-picker";
+import "react-day-picker/lib/style.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    selectedDays: []
+  };
+
+  constructor(props) {
+    super(props);
+    this.handleDayClick = this.handleDayClick.bind(this);
+  }
+
+  handleDayClick(day, { selected }) {
+    let newSelectedDays = this.state.selectedDays;
+    if (selected) {
+      const ind = newSelectedDays.findIndex(e => e.getTime() === day.getTime());
+      newSelectedDays.splice(ind, 1);
+    } else {
+      newSelectedDays = newSelectedDays.concat(day);
+    }
+
+    this.setState({ selectedDays: newSelectedDays });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <DayPicker
+          selectedDays={this.state.selectedDays}
+          onDayClick={this.handleDayClick}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
