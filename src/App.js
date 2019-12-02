@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import DayPicker from "react-day-picker";
+import DayPicker, { DateUtils } from "react-day-picker";
 import "react-day-picker/lib/style.css";
 
 class App extends React.Component {
@@ -16,10 +16,12 @@ class App extends React.Component {
   handleDayClick(day, { selected }) {
     let newSelectedDays = this.state.selectedDays;
     if (selected) {
-      const ind = newSelectedDays.findIndex(e => e.getTime() === day.getTime());
+      const ind = newSelectedDays.findIndex(selectedDay =>
+        DateUtils.isSameDay(selectedDay, day)
+      );
       newSelectedDays.splice(ind, 1);
     } else {
-      newSelectedDays = newSelectedDays.concat(day);
+      newSelectedDays.push(day);
     }
 
     this.setState({ selectedDays: newSelectedDays });
