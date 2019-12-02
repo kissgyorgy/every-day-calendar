@@ -35,12 +35,13 @@ class App extends React.Component {
 
     const storedDays = localStorage.getItem("selectedDays")
     const storedMuted = localStorage.getItem("muted")
+    const storedColor = localStorage.getItem("selectedColor")
 
     this.state = {
       selectedDays: deserializeDates(storedDays),
       muted: JSON.parse(storedMuted) || false,
       showColorPicker: false,
-      selectedColor: "#2196f3",
+      selectedColor: storedColor || "#2196f3",
     }
     this.audio.muted = this.state.muted
   }
@@ -77,6 +78,7 @@ class App extends React.Component {
 
   changeColor(color, event) {
     this.setState({ selectedColor: color.hex, showColorPicker: false })
+    localStorage.setItem("selectedColor", color.hex)
   }
 
   hideColorPicker(event) {
