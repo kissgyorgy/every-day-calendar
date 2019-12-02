@@ -1,30 +1,30 @@
-import React from "react";
-import "./App.css";
-import DayPicker, { DateUtils } from "react-day-picker";
-import "react-day-picker/lib/style.css";
+import React from "react"
+import "./App.css"
+import DayPicker, { DateUtils } from "react-day-picker"
+import "react-day-picker/lib/style.css"
 
 class App extends React.Component {
   state = {
-    selectedDays: []
-  };
+    selectedDays: [],
+  }
 
   constructor(props) {
-    super(props);
-    this.handleDayClick = this.handleDayClick.bind(this);
+    super(props)
+    this.handleDayClick = this.handleDayClick.bind(this)
   }
 
   handleDayClick(day, { selected }) {
-    const { selectedDays } = this.state;
+    const { selectedDays } = this.state
     if (selected) {
       const ind = selectedDays.findIndex(selectedDay =>
         DateUtils.isSameDay(selectedDay, day)
-      );
-      selectedDays.splice(ind, 1);
+      )
+      selectedDays.splice(ind, 1)
     } else {
-      selectedDays.push(day);
+      selectedDays.push(day)
     }
 
-    this.setState({ selectedDays });
+    this.setState({ selectedDays })
   }
 
   render() {
@@ -35,8 +35,8 @@ class App extends React.Component {
           onDayClick={this.handleDayClick}
         />
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
