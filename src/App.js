@@ -51,7 +51,6 @@ class App extends React.Component {
 
   render() {
     const icon = this.state.muted ? faVolumeMute : faVolumeUp
-    const iconStyle = this.state.muted ? { color: "red" } : {}
 
     return (
       <div className="App">
@@ -63,7 +62,6 @@ class App extends React.Component {
         <FontAwesomeIcon
           icon={icon}
           onClick={this.toggleMute}
-          style={iconStyle}
           className="bottom-right"
         />
       </div>
