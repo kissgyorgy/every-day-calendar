@@ -31,6 +31,7 @@ class App extends React.Component {
     this.handleDayClick = this.handleDayClick.bind(this)
     this.toggleMute = this.toggleMute.bind(this)
     this.changeColor = this.changeColor.bind(this)
+    this.hideColorPicker = this.hideColorPicker.bind(this)
 
     const storedDays = localStorage.getItem("selectedDays")
     const storedMuted = localStorage.getItem("muted")
@@ -79,48 +80,59 @@ class App extends React.Component {
     this.setState({ selectedColor: color.hex, showColorPicker: false })
   }
 
+  hideColorPicker(event) {
+    if (this.state.showColorPicker) {
+      this.setState({ showColorPicker: false })
+    }
+  }
+
   render() {
     const icon = this.state.muted ? faVolumeMute : faVolumeUp
     const mutedStyle = this.state.muted ? { color: "grey" } : {}
 
     return (
-      <div className="App">
-        <DayPicker
-          onDayClick={this.handleDayClick}
-          modifiers={{ selected: this.state.selectedDays }}
-          modifiersStyles={{
-            selected: { backgroundColor: this.state.selectedColor },
-          }}
-        />
-
-        <div class="settings">
-          {!this.state.showColorPicker && (
-            <button
-              style={{ backgroundColor: this.state.selectedColor }}
-              onClick={() => this.setState({ showColorPicker: true })}
-              className="picker-toggler"
-            ></button>
-          )}
-
-          {this.state.showColorPicker && (
-            <div className="color-picker">
-              <FontAwesomeIcon icon={faHandPointRight} className="hand-right" />
-              <CirclePicker
-                colors={pickableColors}
-                circleSize={20}
-                circleSpacing={5}
-                onChangeComplete={this.changeColor}
-                width="200px"
-              />
-            </div>
-          )}
-
-          <FontAwesomeIcon
-            icon={icon}
-            onClick={this.toggleMute}
-            className="mute-icon"
-            style={mutedStyle}
+      <div className="container" onClick={this.hideColorPicker}>
+        <div className="App">
+          <DayPicker
+            onDayClick={this.handleDayClick}
+            modifiers={{ selected: this.state.selectedDays }}
+            modifiersStyles={{
+              selected: { backgroundColor: this.state.selectedColor },
+            }}
           />
+
+          <div class="settings">
+            {!this.state.showColorPicker && (
+              <button
+                style={{ backgroundColor: this.state.selectedColor }}
+                onClick={() => this.setState({ showColorPicker: true })}
+                className="picker-toggler"
+              ></button>
+            )}
+
+            {this.state.showColorPicker && (
+              <div className="color-picker">
+                <FontAwesomeIcon
+                  icon={faHandPointRight}
+                  className="hand-right"
+                />
+                <CirclePicker
+                  colors={pickableColors}
+                  circleSize={20}
+                  circleSpacing={5}
+                  onChangeComplete={this.changeColor}
+                  width="200px"
+                />
+              </div>
+            )}
+
+            <FontAwesomeIcon
+              icon={icon}
+              onClick={this.toggleMute}
+              className="mute-icon"
+              style={mutedStyle}
+            />
+          </div>
         </div>
       </div>
     )
