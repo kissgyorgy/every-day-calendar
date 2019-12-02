@@ -35,15 +35,14 @@ class App extends React.Component {
 
     const storedDays = localStorage.getItem("selectedDays")
     const storedMuted = localStorage.getItem("muted")
-    const muted = JSON.parse(storedMuted) || false
 
-    this.audio.muted = muted
     this.state = {
       selectedDays: deserializeDates(storedDays),
-      muted: muted,
+      muted: JSON.parse(storedMuted) || false,
       showColorPicker: false,
       selectedColor: "#2196f3",
     }
+    this.audio.muted = this.state.muted
   }
 
   handleDayClick(day, { selected }) {
