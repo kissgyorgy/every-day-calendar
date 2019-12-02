@@ -2,15 +2,16 @@ import React from "react"
 import "./App.css"
 import DayPicker, { DateUtils } from "react-day-picker"
 import "react-day-picker/lib/style.css"
+import { serializeDates, deserializeDates } from "./storage"
 
 class App extends React.Component {
-  state = {
-    selectedDays: [],
-  }
-
   constructor(props) {
     super(props)
     this.handleDayClick = this.handleDayClick.bind(this)
+    const storedDays = localStorage.getItem("selectedDays")
+    this.state = {
+      selectedDays: deserializeDates(storedDays),
+    }
   }
 
   handleDayClick(day, { selected }) {
@@ -24,6 +25,7 @@ class App extends React.Component {
       selectedDays.push(day)
     }
 
+    localStorage.setItem("selectedDays", serializeDates(selectedDays))
     this.setState({ selectedDays })
   }
 
