@@ -81,6 +81,7 @@ class App extends React.Component {
 
   render() {
     const icon = this.state.muted ? faVolumeMute : faVolumeUp
+    const mutedStyle = this.state.muted ? { color: "grey" } : {}
 
     return (
       <div className="App">
@@ -118,6 +119,7 @@ class App extends React.Component {
             icon={icon}
             onClick={this.toggleMute}
             className="mute-icon"
+            style={mutedStyle}
           />
         </div>
       </div>
