@@ -64,6 +64,7 @@ class App extends React.Component {
           icon={icon}
           onClick={this.toggleMute}
           style={iconStyle}
+          className="bottom-right"
         />
       </div>
     )

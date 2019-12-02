@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  position: relative;
+  display: inline-block;
 }
 
 .App-logo {
@@ -19,4 +21,10 @@
 
 .App-link {
   color: #09d3ac;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 1em;
 }
