@@ -27,6 +27,6 @@
 
 .bottom-right {
   position: absolute;
-  bottom: 0;
+  bottom: -2em;
   right: 1em;
 }
