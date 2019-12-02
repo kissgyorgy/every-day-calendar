@@ -1,10 +1,27 @@
 import React from "react"
-import "./App.css"
 import DayPicker, { DateUtils } from "react-day-picker"
 import "react-day-picker/lib/style.css"
-import { serializeDates, deserializeDates } from "./storage"
+import { CirclePicker } from "react-color"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faVolumeUp, faVolumeMute } from "@fortawesome/free-solid-svg-icons"
+import {
+  faVolumeUp,
+  faVolumeMute,
+  faHandPointRight,
+} from "@fortawesome/free-solid-svg-icons"
+
+import "./App.css"
+import { serializeDates, deserializeDates } from "./storage"
+
+const pickableColors = [
+  "#4A90E2",
+  "#e91e63",
+  "#ff9800",
+  "#9c27b0",
+  "#673ab7",
+  "#3f51b5",
+  "#009688",
+  "#795548",
+]
 
 class App extends React.Component {
   audio = new Audio("ding.mp3")
@@ -13,6 +30,7 @@ class App extends React.Component {
     super(props)
     this.handleDayClick = this.handleDayClick.bind(this)
     this.toggleMute = this.toggleMute.bind(this)
+    this.changeColor = this.changeColor.bind(this)
 
     const storedDays = localStorage.getItem("selectedDays")
     const storedMuted = localStorage.getItem("muted")
@@ -22,6 +40,8 @@ class App extends React.Component {
     this.state = {
       selectedDays: deserializeDates(storedDays),
       muted: muted,
+      showColorPicker: false,
+      selectedColor: "#2196f3",
     }
   }
 
@@ -55,21 +75,51 @@ class App extends React.Component {
     localStorage.setItem("muted", JSON.stringify(toggled))
   }
 
+  changeColor(color, event) {
+    this.setState({ selectedColor: color.hex, showColorPicker: false })
+  }
+
   render() {
     const icon = this.state.muted ? faVolumeMute : faVolumeUp
 
     return (
       <div className="App">
         <DayPicker
-          selectedDays={this.state.selectedDays}
           onDayClick={this.handleDayClick}
+          modifiers={{ selected: this.state.selectedDays }}
+          modifiersStyles={{
+            selected: { backgroundColor: this.state.selectedColor },
+          }}
         />
 
-        <FontAwesomeIcon
-          icon={icon}
-          onClick={this.toggleMute}
-          className="bottom-right"
-        />
+        <div class="settings">
+          {!this.state.showColorPicker && (
+            <button
+              style={{ backgroundColor: this.state.selectedColor }}
+              onClick={() => this.setState({ showColorPicker: true })}
+              className="picker-toggler"
+            ></button>
+          )}
+
+          {this.state.showColorPicker && (
+            <div className="color-picker">
+              <FontAwesomeIcon icon={faHandPointRight} className="hand-right" />
+              <CirclePicker
+                colors={pickableColors}
+                circleSize={20}
+                circleSpacing={5}
+                onChangeComplete={this.changeColor}
+                width="200px"
+              />
+            </div>
+          )}
+
+          <FontAwesomeIcon
+            icon={icon}
+            onClick={this.toggleMute}
+            className="mute-icon"
+          />
+        </div>
       </div>
     )
   }

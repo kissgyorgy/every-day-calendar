@@ -25,8 +25,43 @@
   color: #09d3ac;
 }
 
-.bottom-right {
-  position: absolute;
-  bottom: -2em;
-  right: 1em;
+.DayPicker {
+  display: inline-block;
+  font-size: 1.2rem;
+}
+
+.mute-icon {
+  float: right;
+  cursor: pointer;
+  margin-right: 2em;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.picker-toggler,
+.hand-right {
+  float: left;
+  margin-left: 2em;
+}
+
+.picker-toggler {
+  width: 1.5rem;
+  height: 1.5rem;
+
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+}
+
+.hand-right {
+  margin-right: 5px;
+}
+
+.color-picker {
+  float: left;
+  height: 1.5rem;
+}
+
+.circle-picker {
+  margin-right: 0 !important;
 }
