@@ -4,7 +4,6 @@ pages:
   script:
     - yarn install
     - yarn build
-    - rm -rf public/
     - mv build public
   environment:
     name: production
