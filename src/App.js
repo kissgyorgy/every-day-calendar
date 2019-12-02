@@ -14,17 +14,17 @@ class App extends React.Component {
   }
 
   handleDayClick(day, { selected }) {
-    let newSelectedDays = this.state.selectedDays;
+    const { selectedDays } = this.state;
     if (selected) {
-      const ind = newSelectedDays.findIndex(selectedDay =>
+      const ind = selectedDays.findIndex(selectedDay =>
         DateUtils.isSameDay(selectedDay, day)
       );
-      newSelectedDays.splice(ind, 1);
+      selectedDays.splice(ind, 1);
     } else {
-      newSelectedDays.push(day);
+      selectedDays.push(day);
     }
 
-    this.setState({ selectedDays: newSelectedDays });
+    this.setState({ selectedDays });
   }
 
   render() {
