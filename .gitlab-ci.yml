@@ -8,7 +8,7 @@ pages:
     - mv build/* public
   environment:
     name: production
-    url: https://kissgyorgy.me/everyday-calendar/
+    url: https://kissgyorgy.me/every-day-calendar/
   artifacts:
     paths:
       - public
