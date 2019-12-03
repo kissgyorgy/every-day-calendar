@@ -23,6 +23,8 @@ const pickableColors = [
   "#795548",
 ]
 
+const monday = 1
+
 class App extends React.Component {
   audio = new Audio("ding.mp3")
 
@@ -100,6 +102,7 @@ class App extends React.Component {
             modifiersStyles={{
               selected: { backgroundColor: this.state.selectedColor },
             }}
+            firstDayOfWeek={monday}
           />
 
           <div className="settings">
