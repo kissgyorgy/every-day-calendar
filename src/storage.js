@@ -62,6 +62,14 @@ function saveSelectedColor(hexColor) {
   localStorage.setItem("selectedColor", hexColor)
 }
 
+function loadCalendarType() {
+  return localStorage.getItem("calendarType") || "simone"
+}
+
+function saveCalendarType(componentName) {
+  localStorage.setItem("calendarType", componentName)
+}
+
 export {
   loadSelectedDays,
   toggleSelectedDay,
@@ -70,4 +78,6 @@ export {
   saveMuted,
   loadSelectedColor,
   saveSelectedColor,
+  loadCalendarType,
+  saveCalendarType,
 }

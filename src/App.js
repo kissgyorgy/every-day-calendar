@@ -3,7 +3,12 @@ import MonthCal from "./components/MonthCal"
 import SimoneCal from "./components/SimoneCal"
 import Settings from "./components/Settings"
 import { DateContext, SettingsContext, MONDAY } from "./context"
-import { loadSelectedDays, loadMuted, loadSelectedColor } from "./storage"
+import {
+  loadSelectedDays,
+  loadMuted,
+  loadSelectedColor,
+  loadCalendarType,
+} from "./storage"
 import AudioControl from "./audio"
 
 function App() {
@@ -12,6 +17,7 @@ function App() {
     firstDayOfWeek: MONDAY,
     selectedColor: loadSelectedColor(),
     Component: {},
+    calendarType: loadCalendarType(),
   }))
 
   const audio = new AudioControl(settings.muted)
@@ -31,8 +37,11 @@ function App() {
       value={{ ...settings, Component: SettingsComponent }}
     >
       <DateContext.Provider value={dateContext}>
-        <SimoneCal audio={audio} />
-        {/* <MonthCal audio={audio} /> */}
+        {settings.calendarType === "simone" ? (
+          <SimoneCal audio={audio} />
+        ) : (
+          <MonthCal audio={audio} />
+        )}
       </DateContext.Provider>
     </SettingsContext.Provider>
   )
