@@ -39,21 +39,16 @@ function Settings({ audio, setSettings }) {
   const mutedStyle = settings.muted ? { color: "grey" } : {}
 
   return (
-    <div className="settings">
-      <button
-        style={{ backgroundColor: settings.selectedColor }}
-        className="picker-toggler"
-      />
+    <div className="settings flex justify-center mt-4">
+      <FontAwesomeIcon icon={faHandPointRight} className="hand-right" />
 
       <div className="color-picker">
-        <FontAwesomeIcon icon={faHandPointRight} className="hand-right" />
-
         <CirclePicker
+          color={settings.selectedColor}
           colors={pickableColors}
           circleSize={20}
           circleSpacing={5}
           onChangeComplete={changeColor}
-          width="200px"
         />
       </div>
 
