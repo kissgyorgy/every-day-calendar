@@ -8,7 +8,7 @@ import {
   faVolumeMute,
   faHandPointRight,
 } from "@fortawesome/free-solid-svg-icons"
-import { serializeDates, deserializeDates } from "../storage"
+import { loadSelectedDays, toggleSelectedDay } from "../storage"
 import "./MonthCal.css"
 
 const pickableColors = [
@@ -34,12 +34,11 @@ class MonthCal extends React.Component {
     this.changeColor = this.changeColor.bind(this)
     this.hideColorPicker = this.hideColorPicker.bind(this)
 
-    const storedDays = localStorage.getItem("selectedDays")
     const storedMuted = localStorage.getItem("muted")
     const storedColor = localStorage.getItem("selectedColor")
 
     this.state = {
-      selectedDays: deserializeDates(storedDays),
+      selectedDays: loadSelectedDays(),
       muted: JSON.parse(storedMuted) || false,
       showColorPicker: false,
       selectedColor: storedColor || "#2196f3",
@@ -66,7 +65,8 @@ class MonthCal extends React.Component {
       this.audio.play()
     }
 
-    localStorage.setItem("selectedDays", serializeDates(selectedDays))
+    toggleSelectedDay(day)
+
     this.setState({ selectedDays })
   }
 

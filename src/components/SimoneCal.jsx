@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react"
+import { toggleSelectedDay, hasDay } from "../storage"
 import DateContext from "../context"
 import "../tailwind.css"
 
@@ -31,6 +32,7 @@ function Day({ month, day }) {
 
   const handleClick = () => {
     setChecked(!checked)
+    toggleSelectedDay(date)
   }
 
   return (
