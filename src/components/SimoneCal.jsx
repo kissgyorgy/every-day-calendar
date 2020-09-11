@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
+import DateContext from "../context"
 import "../tailwind.css"
 
 const SHORT_MONTH_NAMES = [
@@ -16,14 +17,16 @@ const SHORT_MONTH_NAMES = [
   "Dec",
 ]
 
-const TODAY = new Date()
-
 function Day({ month, day }) {
+  const date = new Date(2020, month, day)
+  const ctx = useContext(DateContext)
+  const selected = hasDay(ctx.selectedDates, date)
+  const [checked, setChecked] = useState(selected)
+
   let border = " h-7"
-  if (month === TODAY.getMonth() && day === TODAY.getDate()) {
+  if (month === ctx.currentMonth && day === ctx.currentDay) {
     border = " h-6 border-2 border-orange-400"
   }
-  const [checked, setChecked] = useState(false)
   const dayColor = checked ? " bg-green-400" : " bg-gray-200"
 
   const handleClick = () => {
@@ -61,10 +64,11 @@ function Month({ month }) {
 
 function SimoneCal() {
   const months = [...Array(12).keys()]
+  const ctx = useContext(DateContext)
 
   return (
     <>
-      <h1 className="text-center font-bold mt-4">{TODAY.getFullYear()}</h1>
+      <h1 className="text-center font-bold mt-4">{ctx.currentYear}</h1>
       <div className="flex justify-center">
         {months.map((_, ind) => (
           <Month key={ind} month={ind} />
