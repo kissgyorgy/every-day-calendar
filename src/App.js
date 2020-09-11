@@ -1,8 +1,8 @@
 import React from "react"
-import MonthCal from "./components/MonthCal"
+import SimoneCal from "./components/SimoneCal"
 
 function App() {
-  return <MonthCal />
+  return <SimoneCal />
 }
 
 export default App
