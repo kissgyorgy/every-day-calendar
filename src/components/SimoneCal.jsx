@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react"
 import { toggleSelectedDay, hasDay } from "../storage"
-import DateContext from "../context"
+import { DateContext, SettingsContext } from "../context"
 import "../tailwind.css"
 
 const SHORT_MONTH_NAMES = [
@@ -20,12 +20,13 @@ const SHORT_MONTH_NAMES = [
 
 function Day({ month, day }) {
   const date = new Date(2020, month, day)
-  const ctx = useContext(DateContext)
-  const selected = hasDay(ctx.selectedDates, date)
+  const dateCtx = useContext(DateContext)
+  const settings = useContext(SettingsContext)
+  const selected = hasDay(dateCtx.selectedDates, date)
   const [checked, setChecked] = useState(selected)
 
   let border = " h-7"
-  if (month === ctx.currentMonth && day === ctx.currentDay) {
+  if (month === dateCtx.currentMonth && day === dateCtx.currentDay) {
     border = " h-6 border-2 border-orange-400"
   }
   const dayColor = checked ? " bg-green-400" : " bg-gray-200"
@@ -64,18 +65,20 @@ function Month({ month }) {
   )
 }
 
-function SimoneCal() {
+function SimoneCal({ audio }) {
   const months = [...Array(12).keys()]
-  const ctx = useContext(DateContext)
+  const dateCtx = useContext(DateContext)
+  const settings = useContext(SettingsContext)
 
   return (
     <>
-      <h1 className="text-center font-bold mt-4">{ctx.currentYear}</h1>
+      <h1 className="text-center font-bold mt-4">{dateCtx.currentYear}</h1>
       <div className="flex justify-center">
         {months.map((_, ind) => (
           <Month key={ind} month={ind} />
         ))}
       </div>
+      {settings.Component}
     </>
   )
 }

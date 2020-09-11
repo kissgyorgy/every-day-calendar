@@ -1,44 +1,14 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import DayPicker, { DateUtils } from "react-day-picker"
 import "react-day-picker/lib/style.css"
-import { CirclePicker } from "react-color"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {
-  faVolumeUp,
-  faVolumeMute,
-  faHandPointRight,
-} from "@fortawesome/free-solid-svg-icons"
-import {
-  loadSelectedDays,
-  toggleSelectedDay,
-  loadMuted,
-  saveMuted,
-  loadSelectedColor,
-  saveSelectedColor,
-} from "../storage"
+import { loadSelectedDays, toggleSelectedDay } from "../storage"
+import { SettingsContext } from "../context"
 import "./MonthCal.css"
 
-const pickableColors = [
-  "#4A90E2",
-  "#e91e63",
-  "#ff9800",
-  "#9c27b0",
-  "#673ab7",
-  "#3f51b5",
-  "#009688",
-  "#795548",
-]
+function MonthCal({ audio }) {
+  const settings = useContext(SettingsContext)
 
-const monday = 1
-
-function MonthCal() {
-  const [muted, setMuted] = useState(() => loadMuted())
-  const [selectedColor, setSelectedColor] = useState(() => loadSelectedColor())
   const [selectedDays, setSelectedDays] = useState(() => loadSelectedDays())
-  const [showColorPicker, setShowColorPicker] = useState(false)
-
-  const audio = new Audio("ding.mp3")
-  audio.muted = muted
 
   const handleDayClick = (day, { selected }) => {
     if (selected) {
@@ -55,71 +25,21 @@ function MonthCal() {
     setSelectedDays(newSelectedDays)
   }
 
-  const toggleMute = () => {
-    const toggled = !muted
-    audio.muted = toggled
-    setMuted(toggled)
-    saveMuted(toggled)
-  }
-
-  const changeColor = (color, event) => {
-    setShowColorPicker(false)
-    setSelectedColor(color.hex)
-    saveSelectedColor(color.hex)
-  }
-
-  const hideColorPicker = (event) => {
-    if (showColorPicker) {
-      setShowColorPicker(false)
-    }
-  }
-
-  const icon = muted ? faVolumeMute : faVolumeUp
-  const mutedStyle = muted ? { color: "grey" } : {}
-
   return (
-    <div className="container" onClick={hideColorPicker}>
+    <div className="container">
       <div className="App">
         <DayPicker
           onDayClick={handleDayClick}
           modifiers={{ selected: selectedDays }}
           modifiersStyles={{
-            selected: { backgroundColor: selectedColor },
+            selected: { backgroundColor: settings.selectedColor },
           }}
-          firstDayOfWeek={monday}
+          firstDayOfWeek={settings.firstDayOfWeek}
         />
-
-        <div className="settings">
-          {!showColorPicker && (
-            <button
-              style={{ backgroundColor: selectedColor }}
-              onClick={() => setShowColorPicker(true)}
-              className="picker-toggler"
-            ></button>
-          )}
-
-          {showColorPicker && (
-            <div className="color-picker">
-              <FontAwesomeIcon icon={faHandPointRight} className="hand-right" />
-              <CirclePicker
-                colors={pickableColors}
-                circleSize={20}
-                circleSpacing={5}
-                onChangeComplete={changeColor}
-                width="200px"
-              />
-            </div>
-          )}
-
-          <FontAwesomeIcon
-            icon={icon}
-            onClick={toggleMute}
-            className="mute-icon"
-            style={mutedStyle}
-          />
-        </div>
+        {settings.Component}
       </div>
     </div>
   )
 }
+
 export default MonthCal
