@@ -44,4 +44,30 @@ function toggleSelectedDay(date) {
   return selectedDays
 }
 
-export { loadSelectedDays, toggleSelectedDay, hasDay }
+function loadMuted() {
+  const storedMuted = localStorage.getItem("muted")
+  return JSON.parse(storedMuted) || false
+}
+
+function saveMuted(muted) {
+  localStorage.setItem("muted", JSON.stringify(muted))
+}
+
+function loadSelectedColor() {
+  const storedColor = localStorage.getItem("selectedColor")
+  return storedColor || "#2196f3"
+}
+
+function saveSelectedColor(hexColor) {
+  localStorage.setItem("selectedColor", hexColor)
+}
+
+export {
+  loadSelectedDays,
+  toggleSelectedDay,
+  hasDay,
+  loadMuted,
+  saveMuted,
+  loadSelectedColor,
+  saveSelectedColor,
+}

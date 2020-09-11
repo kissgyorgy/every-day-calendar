@@ -8,7 +8,14 @@ import {
   faVolumeMute,
   faHandPointRight,
 } from "@fortawesome/free-solid-svg-icons"
-import { loadSelectedDays, toggleSelectedDay } from "../storage"
+import {
+  loadSelectedDays,
+  toggleSelectedDay,
+  loadMuted,
+  saveMuted,
+  loadSelectedColor,
+  saveSelectedColor,
+} from "../storage"
 import "./MonthCal.css"
 
 const pickableColors = [
@@ -25,13 +32,10 @@ const pickableColors = [
 const monday = 1
 
 function MonthCal() {
-  const storedMuted = localStorage.getItem("muted")
-  const storedColor = localStorage.getItem("selectedColor")
-
-  const [muted, setMuted] = useState(JSON.parse(storedMuted) || false)
-  const [selectedColor, setSelectedColor] = useState(storedColor || "#2196f3")
-  const [showColorPicker, setShowColorPicker] = useState(false)
+  const [muted, setMuted] = useState(() => loadMuted())
+  const [selectedColor, setSelectedColor] = useState(() => loadSelectedColor())
   const [selectedDays, setSelectedDays] = useState(() => loadSelectedDays())
+  const [showColorPicker, setShowColorPicker] = useState(false)
 
   const audio = new Audio("ding.mp3")
   audio.muted = muted
@@ -55,13 +59,13 @@ function MonthCal() {
     const toggled = !muted
     audio.muted = toggled
     setMuted(toggled)
-    localStorage.setItem("muted", JSON.stringify(toggled))
+    saveMuted(toggled)
   }
 
   const changeColor = (color, event) => {
     setShowColorPicker(false)
     setSelectedColor(color.hex)
-    localStorage.setItem("selectedColor", color.hex)
+    saveSelectedColor(color.hex)
   }
 
   const hideColorPicker = (event) => {
