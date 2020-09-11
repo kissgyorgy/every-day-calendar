@@ -26,7 +26,7 @@ function Settings({ audio, setSettings }) {
   const toggleMute = () => {
     const toggled = !settings.muted
     setSettings({ ...settings, muted: toggled })
-    audio.muted = toggled
+    audio.mute(toggled)
     saveMuted(toggled)
   }
 

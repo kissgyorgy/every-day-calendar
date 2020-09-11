@@ -11,16 +11,9 @@ function MonthCal({ audio }) {
   const [selectedDays, setSelectedDays] = useState(() => loadSelectedDays())
 
   const handleDayClick = (day, { selected }) => {
-    if (selected) {
-      const lastSelectedDay = selectedDays[selectedDays.length - 1]
-      if (DateUtils.isSameDay(lastSelectedDay, day)) {
-        audio.pause()
-        audio.currentTime = 0
-      }
-    } else {
-      audio.currentTime = 0
-      audio.play()
-    }
+    const lastSelectedDay = selectedDays[selectedDays.length - 1]
+    const sameDay = DateUtils.isSameDay(lastSelectedDay, day)
+    audio.play(!selected && !sameDay)
     const newSelectedDays = toggleSelectedDay(day)
     setSelectedDays(newSelectedDays)
   }

@@ -4,6 +4,7 @@ import SimoneCal from "./components/SimoneCal"
 import Settings from "./components/Settings"
 import { DateContext, SettingsContext, MONDAY } from "./context"
 import { loadSelectedDays, loadMuted, loadSelectedColor } from "./storage"
+import AudioControl from "./audio"
 
 function App() {
   const [settings, setSettings] = useState(() => ({
@@ -13,9 +14,7 @@ function App() {
     Component: {},
   }))
 
-  const audio = new Audio("ding.mp3")
-  audio.muted = settings.muted
-
+  const audio = new AudioControl(settings.muted)
   const SettingsComponent = <Settings audio={audio} setSettings={setSettings} />
 
   const today = new Date()

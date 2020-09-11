@@ -41,15 +41,10 @@ function Day({ month, day, audio }) {
   }
 
   const handleClick = () => {
-    setChecked(!checked)
+    const toggled = !checked
+    audio.play(toggled)
+    setChecked(toggled)
     toggleSelectedDay(date)
-    if (checked) {
-      audio.pause()
-      audio.currentTime = 0
-    } else {
-      audio.currentTime = 0
-      audio.play()
-    }
   }
 
   return (
