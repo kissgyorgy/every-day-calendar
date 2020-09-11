@@ -41,6 +41,7 @@ function toggleSelectedDay(date) {
   }
 
   saveSelectedDays(selectedDays)
+  return selectedDays
 }
 
 export { loadSelectedDays, toggleSelectedDay, hasDay }

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import DayPicker, { DateUtils } from "react-day-picker"
 import "react-day-picker/lib/style.css"
 import { CirclePicker } from "react-color"
@@ -24,122 +24,98 @@ const pickableColors = [
 
 const monday = 1
 
-class MonthCal extends React.Component {
-  audio = new Audio("ding.mp3")
+function MonthCal() {
+  const storedMuted = localStorage.getItem("muted")
+  const storedColor = localStorage.getItem("selectedColor")
 
-  constructor(props) {
-    super(props)
-    this.handleDayClick = this.handleDayClick.bind(this)
-    this.toggleMute = this.toggleMute.bind(this)
-    this.changeColor = this.changeColor.bind(this)
-    this.hideColorPicker = this.hideColorPicker.bind(this)
+  const [muted, setMuted] = useState(JSON.parse(storedMuted) || false)
+  const [selectedColor, setSelectedColor] = useState(storedColor || "#2196f3")
+  const [showColorPicker, setShowColorPicker] = useState(false)
+  const [selectedDays, setSelectedDays] = useState(() => loadSelectedDays())
 
-    const storedMuted = localStorage.getItem("muted")
-    const storedColor = localStorage.getItem("selectedColor")
+  const audio = new Audio("ding.mp3")
+  audio.muted = muted
 
-    this.state = {
-      selectedDays: loadSelectedDays(),
-      muted: JSON.parse(storedMuted) || false,
-      showColorPicker: false,
-      selectedColor: storedColor || "#2196f3",
-    }
-    this.audio.muted = this.state.muted
-  }
-
-  handleDayClick(day, { selected }) {
-    const { selectedDays } = this.state
+  const handleDayClick = (day, { selected }) => {
     if (selected) {
       const lastSelectedDay = selectedDays[selectedDays.length - 1]
       if (DateUtils.isSameDay(lastSelectedDay, day)) {
-        this.audio.pause()
-        this.audio.currentTime = 0
+        audio.pause()
+        audio.currentTime = 0
       }
-
-      const ind = selectedDays.findIndex((selectedDay) =>
-        DateUtils.isSameDay(selectedDay, day)
-      )
-      selectedDays.splice(ind, 1)
     } else {
-      selectedDays.push(day)
-      this.audio.currentTime = 0
-      this.audio.play()
+      audio.currentTime = 0
+      audio.play()
     }
-
-    toggleSelectedDay(day)
-
-    this.setState({ selectedDays })
+    const newSelectedDays = toggleSelectedDay(day)
+    setSelectedDays(newSelectedDays)
   }
 
-  toggleMute() {
-    const toggled = !this.state.muted
-    this.audio.muted = toggled
-    this.setState({ muted: toggled })
+  const toggleMute = () => {
+    const toggled = !muted
+    audio.muted = toggled
+    setMuted(toggled)
     localStorage.setItem("muted", JSON.stringify(toggled))
   }
 
-  changeColor(color, event) {
-    this.setState({ selectedColor: color.hex, showColorPicker: false })
+  const changeColor = (color, event) => {
+    setShowColorPicker(false)
+    setSelectedColor(color.hex)
     localStorage.setItem("selectedColor", color.hex)
   }
 
-  hideColorPicker(event) {
-    if (this.state.showColorPicker) {
-      this.setState({ showColorPicker: false })
+  const hideColorPicker = (event) => {
+    if (showColorPicker) {
+      setShowColorPicker(false)
     }
   }
 
-  render() {
-    const icon = this.state.muted ? faVolumeMute : faVolumeUp
-    const mutedStyle = this.state.muted ? { color: "grey" } : {}
+  const icon = muted ? faVolumeMute : faVolumeUp
+  const mutedStyle = muted ? { color: "grey" } : {}
 
-    return (
-      <div className="container" onClick={this.hideColorPicker}>
-        <div className="App">
-          <DayPicker
-            onDayClick={this.handleDayClick}
-            modifiers={{ selected: this.state.selectedDays }}
-            modifiersStyles={{
-              selected: { backgroundColor: this.state.selectedColor },
-            }}
-            firstDayOfWeek={monday}
+  return (
+    <div className="container" onClick={hideColorPicker}>
+      <div className="App">
+        <DayPicker
+          onDayClick={handleDayClick}
+          modifiers={{ selected: selectedDays }}
+          modifiersStyles={{
+            selected: { backgroundColor: selectedColor },
+          }}
+          firstDayOfWeek={monday}
+        />
+
+        <div className="settings">
+          {!showColorPicker && (
+            <button
+              style={{ backgroundColor: selectedColor }}
+              onClick={() => setShowColorPicker(true)}
+              className="picker-toggler"
+            ></button>
+          )}
+
+          {showColorPicker && (
+            <div className="color-picker">
+              <FontAwesomeIcon icon={faHandPointRight} className="hand-right" />
+              <CirclePicker
+                colors={pickableColors}
+                circleSize={20}
+                circleSpacing={5}
+                onChangeComplete={changeColor}
+                width="200px"
+              />
+            </div>
+          )}
+
+          <FontAwesomeIcon
+            icon={icon}
+            onClick={toggleMute}
+            className="mute-icon"
+            style={mutedStyle}
           />
-
-          <div className="settings">
-            {!this.state.showColorPicker && (
-              <button
-                style={{ backgroundColor: this.state.selectedColor }}
-                onClick={() => this.setState({ showColorPicker: true })}
-                className="picker-toggler"
-              ></button>
-            )}
-
-            {this.state.showColorPicker && (
-              <div className="color-picker">
-                <FontAwesomeIcon
-                  icon={faHandPointRight}
-                  className="hand-right"
-                />
-                <CirclePicker
-                  colors={pickableColors}
-                  circleSize={20}
-                  circleSpacing={5}
-                  onChangeComplete={this.changeColor}
-                  width="200px"
-                />
-              </div>
-            )}
-
-            <FontAwesomeIcon
-              icon={icon}
-              onClick={this.toggleMute}
-              className="mute-icon"
-              style={mutedStyle}
-            />
-          </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
-
 export default MonthCal
