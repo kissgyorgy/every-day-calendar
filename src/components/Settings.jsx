@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useState, useContext } from "react"
 import { CirclePicker } from "react-color"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
@@ -6,6 +6,8 @@ import {
   faVolumeMute,
   faCalendarAlt,
   faCalendarDay,
+  faCog,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons"
 import { saveMuted, saveSelectedColor, saveCalendarType } from "../storage"
 import { SettingsContext } from "../context"
@@ -26,6 +28,7 @@ function getColor(isEnabled) {
 }
 
 function Settings({ audio, setSettings }) {
+  const [hidden, setHidden] = useState(true)
   const settings = useContext(SettingsContext)
 
   const toggleMute = () => {
@@ -55,8 +58,18 @@ function Settings({ audio, setSettings }) {
           circleSpacing={5}
           width={200}
           onChangeComplete={changeColor}
+  if (hidden) {
+    return (
+      <div className="flex pt-2 mr-4 justify-center ml-64">
+        <FontAwesomeIcon
+          icon={faCog}
+          onClick={() => setHidden(!hidden)}
+          className="cursor-pointer text-gray-800"
+          size="lg"
         />
       </div>
+    )
+  }
 
       <FontAwesomeIcon
         icon={faCalendarAlt}
