@@ -3,7 +3,6 @@ import DayPicker, { DateUtils } from "react-day-picker"
 import "react-day-picker/lib/style.css"
 import { loadSelectedDays, toggleSelectedDay } from "../storage"
 import { SettingsContext } from "../context"
-import "./MonthCal.css"
 
 function MonthCal({ audio }) {
   const settings = useContext(SettingsContext)
@@ -18,19 +17,20 @@ function MonthCal({ audio }) {
     setSelectedDays(newSelectedDays)
   }
 
+  const modifiersStyles = {
+    selected: { backgroundColor: settings.selectedColor },
+  }
+
   return (
-    <div className="container">
-      <div className="App">
-        <DayPicker
-          onDayClick={handleDayClick}
-          modifiers={{ selected: selectedDays }}
-          modifiersStyles={{
-            selected: { backgroundColor: settings.selectedColor },
-          }}
-          firstDayOfWeek={settings.firstDayOfWeek}
-        />
-        {settings.Component}
-      </div>
+    <div className="mt-4">
+      <DayPicker
+        className="flex justify-center text-xl"
+        onDayClick={handleDayClick}
+        modifiers={{ selected: selectedDays }}
+        modifiersStyles={modifiersStyles}
+        firstDayOfWeek={settings.firstDayOfWeek}
+      />
+      {settings.Component}
     </div>
   )
 }

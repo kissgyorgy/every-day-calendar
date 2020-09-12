@@ -81,9 +81,9 @@ function SimoneCal({ audio }) {
   const settings = useContext(SettingsContext)
 
   return (
-    <div>
+    <div className="overflow-auto pb-20 h-screen">
       <h1 className="text-center font-bold mt-4">{dateCtx.currentYear}</h1>
-      <div className="flex justify-center">
+      <div className="flex justify-center mb-4">
         {months.map((_, ind) => (
           <Month key={ind} month={ind} audio={audio} />
         ))}
