@@ -1,6 +1,6 @@
 pages:
   stage: deploy
-  image: node:10-alpine
+  image: node:24-alpine
   script:
     - yarn install
     - yarn build
